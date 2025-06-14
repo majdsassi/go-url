@@ -1,0 +1,197 @@
+{{ define "index.tmpl" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go-URL - Fast & Simple URL Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.4/htmx.min.js" integrity="sha512-2kIcAizYXhIn8TzUvqzEDZNuDZ+aW7yE/+f1HJHXFjQcGNfv1kqzJSTBRBSlOgp6B/KZsz1K0a3ZTqP9dnxioQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'go-blue': '#00ADD8',
+                        'go-light': '#5DC9E2',
+                        'go-dark': '#00758F'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-go-blue rounded-lg flex items-center justify-center">
+                        <img src="/go-url.png">
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900 dark:text-white">Go-URL</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Fast & Simple URL Shortener</p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-go-blue transition-colors">Home</a>
+                    <a href="https://www.github.com/majdsassi/go-url" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-go-blue transition-colors">API Docs</a>
+                    <a href="https://www.github.com/majdsassi/go-url" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-go-blue transition-colors">GitHub</a>
+                    
+                    <!-- Dark Mode Toggle
+                    <button id="dark-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path class="dark:hidden" d="M10 2L13.09 8.26L20 9L14 14.74L15.18 22L10 18.27L4.82 22L6 14.74L0 9L6.91 8.26L10 2Z"/>
+                            <path class="hidden dark:block" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button> -->
+                </nav>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main class="flex-1">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+            <div class="text-center">
+                <!-- Gopher-inspired icon -->
+                <div class="mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-go-blue to-go-light rounded-full shadow-lg">
+                        <img src="/go-url.png">
+                    </div>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                    Shorten Your Links <br class="hidden sm:block">
+                    <span class="text-go-blue">in Seconds</span>
+                </h1>
+                
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+                    No account needed. Just paste and go! Powered by Golang for lightning-fast performance.
+                </p>
+
+                <!-- URL Input Section -->
+                <form hx-post="/create" hx-target="#result-section">
+                <div class="max-w-2xl mx-auto mb-8">
+                    <div class="flex flex-col sm:flex-row gap-4 p-2 bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+                        <input 
+                            type="url" 
+                            id="url-input"
+                            placeholder="Paste your long URL here..."
+                            name="url"
+                            class="flex-1 px-6 py-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-0 rounded-xl focus:ring-2 focus:ring-go-blue focus:outline-none text-lg"
+                            pattern="https?:\/\/(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([\/\w\.-]*)*\/?"
+                            required
+                        >
+                        <button 
+                            type="submit"
+                            class="px-8 py-4 bg-go-blue hover:bg-go-dark text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 focus:ring-2 focus:ring-go-blue focus:ring-offset-2 focus:outline-none shadow-lg text-lg"
+                        >
+                            Shorten
+                        </button>
+                    </div>
+                </div>
+                </form>
+
+                <!-- Result Section -->
+                <div id="result-section" class="max-w-2xl mx-auto mb-12">
+                </div>
+
+                <!-- Example -->
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Example: https://verylongurl.com/path → <span class="text-go-blue font-mono">go-url.dev/abc123</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="bg-gray-50 dark:bg-gray-800/50 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Go-URL?</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-lg">Built with Golang for maximum performance and reliability</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Fast -->
+                    <div class="text-center group">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-go-blue/10 rounded-full mb-6 group-hover:bg-go-blue/20 transition-colors">
+                            <svg class="w-8 h-8 text-go-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Lightning Fast</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Powered by Golang for lightning speed. Your links are shortened instantly with minimal latency.</p>
+                    </div>
+
+                    <!-- Simple -->
+                    <div class="text-center group">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-go-blue/10 rounded-full mb-6 group-hover:bg-go-blue/20 transition-colors">
+                            <svg class="w-8 h-8 text-go-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1a3 3 0 000-6h-1m4 6h1a3 3 0 000-6h-1m-4 6v6m4-6v6"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Super Simple</h3>
+                        <p class="text-gray-600 dark:text-gray-300">No login required. Just shorten & share. Clean interface designed for maximum usability.</p>
+                    </div>
+
+                    <!-- Reliable -->
+                    <div class="text-center group">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-go-blue/10 rounded-full mb-6 group-hover:bg-go-blue/20 transition-colors">
+                            <svg class="w-8 h-8 text-go-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Rock Solid</h3>
+                        <p class="text-gray-600 dark:text-gray-300">99.9% uptime with secure links. Enterprise-grade infrastructure you can depend on.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <div class="w-6 h-6 bg-go-blue rounded-md flex items-center justify-center">
+                        <img src="/go-url.png">
+                    </div>
+                    <span class="text-gray-900 dark:text-white font-semibold">Go-URL</span>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                        © 2025 Go-URL. All rights reserved.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-go-blue transition-colors text-sm">Terms</a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-go-blue transition-colors text-sm">Privacy</a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-go-blue transition-colors text-sm">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        const copyUrl = (url) =>{
+            navigator.clipboard.writeText(url)
+        }
+    </script>
+
+   </body>
+</html>
+{{end}}
