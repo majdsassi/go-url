@@ -13,11 +13,6 @@ dist/
 # Output of the go coverage tool
 *.out
 
-# Dependency directories
-vendor/
-go.mod
-go.sum
-
 # Go workspace file
 go.work
 
